@@ -1,0 +1,28 @@
+def MergeSortInversion(array):
+    length = len(array)
+    if length == 1:
+        return 0, array
+    leftarray = array[: length // 2]
+    rightarray = array[length // 2 :]
+    leftinversion, sortedleft = MergeSortInversion(leftarray)
+    rightinversion, sortedright = MergeSortInversion(rightarray)
+    out = []
+    lo = 0
+    ro = 0
+    invers = leftinversion + rightinversion
+    for i in range(length):
+        if lo == len(leftarray):
+            out.append(sortedright[ro])
+            ro += 1
+        elif ro == len(rightarray):
+            out.append(sortedleft[lo])
+            lo += 1
+        else:
+            if sortedleft[lo] < sortedright[ro]:
+                out.append(sortedleft[lo])
+                lo += 1
+            else:
+                out.append(sortedright[ro])
+                ro += 1
+                invers += len(leftarray) - lo
+    return invers, out
